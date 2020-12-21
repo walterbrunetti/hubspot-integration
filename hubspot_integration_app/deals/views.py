@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView
+from django.conf import settings
 from rest_framework_mongoengine import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,7 +14,7 @@ class HomeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomeView, self).get_context_data(**kwargs)
-        context['auth_uri'] = 'https://app.hubspot.com/oauth/authorize?client_id=c8af7054-6b10-4aee-8933-845e480820d0&redirect_uri=http://localhost:8000/sync/oauth_callback&scope=contacts%20oauth'
+        context['auth_uri'] = settings.HUBSPOT_AUTH_URI
         return context
 
 

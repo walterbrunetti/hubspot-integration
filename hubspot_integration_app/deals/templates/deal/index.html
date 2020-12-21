@@ -60,7 +60,12 @@
         <input type="hidden" id="authUrl" value="{{ auth_uri }}" />
 
         <h2>Hubsopt Integration</h2>
-
+        <p>
+            Use this button to sync data with Hubspot. <br />
+            If this is the first time you sync with Hubspot, you will be redirected to Hubspot auth page. 
+            Use credentials provided to log-in and then select `App test account 1`. <br />
+            Next time you try to sync, existing token will be used.
+        </p>
         <input type="button" id="syncUp" value="Sync data from Hubspot" />
 
         <h3>List of existing deals</h3>

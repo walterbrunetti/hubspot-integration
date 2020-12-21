@@ -27,7 +27,7 @@ SECRET_KEY = 'vtc8p2!hld^+pmjge5nf%z=+pa!rd9+rtv4elu*mik58*aizzt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -85,13 +85,10 @@ DATABASES = {
     }
 }
 
-
 # Mongo DB
 MONGO_CONNECT_KWARGS = {
     'db': 'hubspot_integration',
-    'host': 'mongodb://127.0.0.1/hubspot_integration',
-    'username': '',
-    'password': '',
+    'host': os.environ.get('MONGO_HOST', ''),
     'authentication_source': 'admin'
 }
 
@@ -101,7 +98,6 @@ if TEST_MODE:
     connect(host='mongomock://localhost')
 else:
     connect(**MONGO_CONNECT_KWARGS)
-
 
 
 # Password validation
@@ -144,6 +140,7 @@ STATIC_URL = '/static/'
 
 
 # Hubspot Integration settings
-HUBSPOT_CLIENT_ID = ''
-HUBSPOT_CLIENT_SECRET = ''
+HUBSPOT_CLIENT_ID = os.environ.get('HUBSPOT_CLIENT_ID', '')
+HUBSPOT_CLIENT_SECRET = os.environ.get('HUBSPOT_CLIENT_SECRET', '')
 HUBSPOT_CALLBACK_URI = 'http://localhost:8000/sync/oauth_callback'
+HUBSPOT_AUTH_URI = 'https://app.hubspot.com/oauth/authorize?client_id={}&redirect_uri={}&scope=contacts%20oauth'.format(HUBSPOT_CLIENT_ID, HUBSPOT_CALLBACK_URI)
