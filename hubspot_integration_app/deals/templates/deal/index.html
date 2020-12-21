@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Hubsopt Integration App</title>
+        <style>
+            table, th, td {
+              border: 1px solid black;
+              border-collapse: collapse;
+              padding: 5px;
+            }
+        </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script>
+            function syncUpData(){
+                const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                $.ajax({
+                      method: 'POST',
+                      headers: {'X-CSRFToken': csrftoken},
+                      url: '/deals/sync_data',
+                      contentType: 'application/json',
+                      dataType: "json"
+                    }).done(function(data) {
+                      if (!data.success && data.token_exception){
+                        var authUrl = $('#authUrl').val();
+                        $(location).attr('href', authUrl);
+                        return;
+                      }
+                      if (!data.success){
+                        alert('Something went really wrong: ' + data.error_massage);
+                        return;
+                      }
+                      
+                      getDeals();
+                      alert('Deals were updated!');
+                    });
+            }
+
+            function getDeals(){
+                $.get( "/deals/", function( data ) {
+                    $("#existing-deals tbody tr").remove();
+                    var dealsListTable = $('#existing-deals tbody');
+                    $.each(data, function(index, value){
+                        var tableRow = `<td>${value.deal_id}</td><td>${value.name}</td><td>${value.stage}</td><td>${value.close_date}</td><td>${value.amount}</td><td>${value.deal_type}</td>`;
+                        dealsListTable.append(`<tr>${tableRow}</tr>`);
+                    })
+                });
+            }
+
+            $(document).ready(function(){
+                $('#syncUp').bind("click",function(){
+                    syncUpData();
+                });
+                getDeals();
+            });
+        </script>
+    </head>
+
+    <body>
+        {% csrf_token %}
+        <input type="hidden" id="authUrl" value="{{ auth_uri }}" />
+
+        <h2>Hubsopt Integration</h2>
+
+        <input type="button" id="syncUp" value="Sync data from Hubspot" />
+
+        <h3>List of existing deals</h3>
+        <table id="existing-deals">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Stage</th>
+                    <th>Close Date</th>
+                    <th>Amount</th>
+                    <th>Type</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+    </body>
+</html>
