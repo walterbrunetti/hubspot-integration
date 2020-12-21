@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import os
+import sys
 from mongoengine import connect
 from pathlib import Path
 
@@ -38,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'security.apps.SecurityConfig',
+    'sync.apps.SyncConfig',
+    'deals.apps.DealsConfig',
 ]
 
 MIDDLEWARE = [
@@ -92,7 +95,12 @@ MONGO_CONNECT_KWARGS = {
     'authentication_source': 'admin'
 }
 
-connect(**MONGO_CONNECT_KWARGS)
+TEST_MODE = any(x in sys.argv for x in ['test', 'pytest'])
+
+if TEST_MODE:
+    connect(host='mongomock://localhost')
+else:
+    connect(**MONGO_CONNECT_KWARGS)
 
 
 
@@ -138,4 +146,4 @@ STATIC_URL = '/static/'
 # Hubspot Integration settings
 HUBSPOT_CLIENT_ID = ''
 HUBSPOT_CLIENT_SECRET = ''
-HUBSPOT_CALLBACK_URI = 'http://localhost:8000/security/oauth_callback'
+HUBSPOT_CALLBACK_URI = 'http://localhost:8000/sync/oauth_callback'
