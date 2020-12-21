@@ -23,8 +23,8 @@
 
 ### Running Dockerized version
 * Make sure you have these ENV variables setup:
-  - export MONGO_USER='<username>'
-  - export MONGO_PASSWORD='<password>'
+  - export MONGO_USER=<USERNAME>
+  - export MONGO_PASSWORD=<PASSWORD>
   - export HUBSPOT_CLIENT_ID=<HUBSPOT_CLIENT_ID>  # will be provided separately
   - export HUBSPOT_CLIENT_SECRET=<HUBSPOT_CLIENT_SECRET>  # will be provided separately
 * cd into project directory (/hubspot-integration-env/hubspot-integration)
