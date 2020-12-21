@@ -1,0 +1,30 @@
+version: '3.4'
+services:
+  hubspot-integration-web:
+    build:
+      context: .
+      args:
+        buildno: 1
+      dockerfile: Dockerfile
+    image: hubspot-integration:latest
+    working_dir: /app
+    environment:
+      - HUBSPOT_CLIENT_ID=$HUBSPOT_CLIENT_ID
+      - HUBSPOT_CLIENT_SECRET=$HUBSPOT_CLIENT_SECRET
+      - MONGO_HOST=mongodb://$MONGO_USER:$MONGO_PASSWORD@mongo:27017
+      - PYTHONPATH=/app
+    depends_on:
+      - mongo
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+  mongo:
+    image: mongo:4.2.1
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USER
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASSWORD
+    volumes:
+      - $HOME/$USER/hubspot_integration:/data/db
+    ports:
+      - "27017:27017"

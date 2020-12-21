@@ -20,4 +20,16 @@
 * python manage.py runserver
 * Open http://localhost:8000/deals/home in your browser and follow instructions there
 
+
+### Running Dockerized version
+* Make sure you have these ENV variables setup:
+  - export MONGO_USER='<username>'
+  - export MONGO_PASSWORD='<password>'
+  - export HUBSPOT_CLIENT_ID=<HUBSPOT_CLIENT_ID>  # will be provided separately
+  - export HUBSPOT_CLIENT_SECRET=<HUBSPOT_CLIENT_SECRET>  # will be provided separately
+* cd into project directory (/hubspot-integration-env/hubspot-integration)
+* docker-compose build
+* docker-compose up
+* Open http://localhost:8000/deals/home in your browser and follow instructions there
+
 Note: Hubspot credentials will be provided in an email.
