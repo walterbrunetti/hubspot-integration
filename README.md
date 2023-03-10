@@ -1,5 +1,7 @@
 # hubspot-integration
 
+Simple app to integrate with Hubsopt and authenticating with OAuth.
+
 ### Local setup:
 
 * python3 -m venv hubspot-integration-env
